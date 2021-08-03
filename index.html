@@ -1,0 +1,2093 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+		body,
+		html {
+			width: 100%;
+			height: 100%;
+			margin: 0;
+		}
+
+		#allmap {
+			height: 100%;
+			width: 100%;
+		}
+
+		ul li {
+			list-style: none;
+		}
+
+		.btn-wrap {
+			z-index: 999;
+			position: absolute;
+			left: 0%;
+			top: 90%;
+			margin-left: 0rem;
+			padding: 1rem 1rem;
+			border-radius: .25rem;
+			background-color: #fff;
+			box-shadow: 0 2px 6px 0 rgba(27, 142, 236, 0.5);
+		}
+
+		.zhuangtai {
+			z-index: 999;
+			position: absolute;
+			left: 80%;
+			top: 80%;
+			width: 120px;
+			padding: 1rem 1rem;
+			border-radius: .25rem;
+			background-color: #fff;
+			box-shadow: 0 2px 6px 0 rgba(27, 142, 236, 0.5);
+		}
+
+		.zhuangtaix {
+			z-index: 999;
+			position: absolute;
+			left: 82.5%;
+			top: 8%;
+			width: 200px;
+			padding: 1rem 1rem;
+			border-radius: .25rem;
+			background-color: #fff;
+			box-shadow: 0 2px 6px 0 rgba(27, 142, 236, 0.5);
+		}
+
+		.bock {
+			position: absolute;
+			left: 6rem;
+			border: 2px solid #000000;
+			display: inline-block;
+			width: 20px;
+			height: 10px;
+
+
+		}
+
+		.zhuangtai_desc {
+			position: relative;
+			display: inline-block;
+			width: 100px;
+			height: 15px;
+			font-size: small;
+			margin: 4px 0 4px 0;
+
+
+		}
+
+		.zhuangtai_descx {
+			position: relative;
+			display: inline-block;
+			width: 100px;
+			height: 25px;
+			font-size: small;
+			margin: 1px 0 4px 0;
+
+
+		}
+
+		.zhuangtai_descx2 {
+			position: relative;
+			display: inline-block;
+			width: 100px;
+			height: 25px;
+			font-size: small;
+			margin: 1px 0 4px 0;
+
+
+		}
+
+		.notwork {
+			background-color: #FF0000;
+			display: inline-block;
+			width: 100px;
+			height: 20px;
+		}
+
+		.btn {
+			width: 120px;
+			height: 30px;
+			float: left;
+			background-color: rgb(57, 66, 180);
+			color: rgba(27, 142, 236, 1);
+			font-size: 14px;
+			border: 1px solid rgba(27, 142, 236, 1);
+			border-radius: 5px;
+			margin: 0 5px;
+			text-align: center;
+			line-height: 30px;
+		}
+
+		.btn:hover {
+			background-color: rgba(27, 142, 236, 0.8);
+			color: #fff;
+		}
+
+		body,
+		html {
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+			margin: 0px;
+			padding: 0px;
+			font-family: "微软雅黑";
+		}
+
+		#container {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			left: 0px;
+			top: 0px;
+			z-index: 1;
+		}
+
+		#search {
+			height: 22px;
+			width: 700px;
+			position: relative;
+			left: 60px;
+			top: 10px;
+			position: relative;
+			z-index: 100
+		}
+
+		#sydwmc {
+			width: 200px;
+			height: 26px;
+			border: 1px #ccc solid
+		}
+
+		select {
+			width: 140px;
+		}
+	</style>
+	<script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript"
+		src="http://api.map.baidu.com/api?v=2.0&ak=MQC0s1DOlBnYO5tHUxfcbIsUYhe8bcFG"> </script>
+	<!--加载鼠标绘制工具-->
+	<script type="text/javascript"
+		src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
+	<link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
+	<title>地图展示</title>
+</head>
+
+<body>
+
+	<ul class="btn-wrap" style="z-index: 999;">
+		<li class="night btn" onclick="showcellsector(lngx,laty)">显示/隐藏口碑小区</li>
+		<li class="light btn" onclick="showtc(lngx,laty)">显示/隐藏口碑场景图层</li>
+		<li class="light btn" onclick="hiddenlabel()">显示/隐藏文字</li>
+		<li class="light btn" onclick="pcultershow()">显示/隐藏问题簇</li>
+	      <li class="night btn" onclick="clearall()">清除所有</li> 
+	</ul>
+	<!--<li class="night btn" onclick="clearall()">清除所有</li>-->
+	<div class="zhuangtaix">
+		<div class="zhuangtai_descx"> <input type="text" id="text" name="text66" / size="25"> <input onclick="cjfindx()"
+				type="button" value="搜索" oncopy="return true" oncut="return true" style="width:45px;height:25px;">
+		</div>
+	</div>
+
+	<div class="zhuangtai">
+		<div class="zhuangtai_desc">口碑质量优 <div class="bock" style="background-color:#0000FF"></div>
+		</div>
+		<div class="zhuangtai_desc">口碑质量良 <div class="bock" style="background-color:#FFFF00"></div>
+		</div>
+		<div class="zhuangtai_desc">口碑质量差 <div class="bock" style="background-color:#FF0000"></div>
+		</div>
+		<div class="zhuangtai_desc">口碑质量无效 <div class="bock" style="background-color:#000000"></div>
+		</div>
+	</div>
+
+	<div id="allmap"></div>
+
+</body>
+
+</html>
+
+<script type="text/javascript">
+	//显示的位置
+	// 百度地图API功能
+    //alert("123");
+	var strx1 = window.external.showcolorx();//getDebugPath()为c#方法
+	//var ddjson= window.external.poinfor();//getDebugPath()为c#方法	 
+
+	var valx = strx1.split(";");
+	var map = new BMap.Map("allmap");   // 创建Map实例
+	var point = new BMap.Point(valx[7], valx[8]);
+	var lngx = valx[7];
+	var laty = valx[8];
+	map.centerAndZoom(point, 15);  // 初始化地图,设置中心点坐标和地图级别
+	//添加地图类型控件
+	map.addControl(new BMap.MapTypeControl({
+		mapTypes: [
+			BMAP_NORMAL_MAP,
+			BMAP_HYBRID_MAP
+		]
+	}));
+	map.setCurrentCity(valx[6]);          // 设置地图显示的城市 此项是必须设置的
+	map.enableScrollWheelZoom(true);
+
+	//地图划线
+	var bdryarry=[];
+	var bmap = {
+        drawingManager: '',
+        styleOptions: {
+            strokeColor: "Cyan",      //边线颜色。  
+            fillColor: "Cyan",        //填充颜色。当参数为空时，圆形将没有填充效果。  
+            strokeWeight: 3,        //边线的宽度，以像素为单位。  
+            strokeOpacity: 0.8,     //边线透明度，取值范围0 - 1。  
+            fillOpacity: 0.5,       //填充的透明度，取值范围0 - 1。  
+            strokeStyle: 'solid'    //边线的样式，solid或dashed。  
+        },
+
+        /*------实例化-----*/
+		
+        init: function () {
+            var styleOptions = this.styleOptions;
+            map.enableScrollWheelZoom();
+            //实例化鼠标绘制工具  
+            this.drawingManager = new BMapLib.DrawingManager(map, {
+                isOpen: false, //是否开启绘制模式  
+                enableDrawingTool: true, //是否显示工具栏  
+                drawingToolOptions: {
+                    anchor: BMAP_ANCHOR_TOP_RIGHT, //位置
+                    offset: new BMap.Size(13, -2), //偏离值
+                    scale: 0.5, //工具栏缩放比例
+                    drawingModes: [
+                     //工具栏上可以选择出现的绘制模式
+                     //BMAP_DRAWING_MARKER,
+                     BMAP_DRAWING_POLYGON,
+                     BMAP_DRAWING_POLYLINE,
+                     BMAP_DRAWING_RECTANGLE,
+                     BMAP_DRAWING_CIRCLE   
+                    ]
+
+					
+                },
+				enableCalculate:true,
+                polylineOptions: styleOptions, //线的样式  
+                polygonOptions: styleOptions, //多边形的样式  
+				circleOptions: styleOptions, //圆形的样式
+				rectangleOptions: styleOptions, //距形的样式    
+            });
+            //添加鼠标绘制工具监听事件，用于获取绘制结果  
+            this.drawingManager.addEventListener('overlaycomplete', bmap.overlaycomplete);
+        },
+        overlaycomplete: function (e) {
+			
+			bdryarry.splice(0,bdryarry.length);
+
+            switch (e.drawingMode) {
+                case "polyline":
+                    {
+                        var polyline = e.overlay;
+						//alert(polyline);
+
+                        /*-----------------折线右键删除-------------------------*/
+                        var polylineMenu = new BMap.ContextMenu();
+                        polylineMenu.addItem(new BMap.MenuItem('删除折线', function () {
+                            map.removeOverlay(polyline);
+                        }));
+                        polyline.addContextMenu(polylineMenu);
+                    }
+                    break;
+                case "polygon":
+                    {
+
+						
+                        var polygon = e.overlay;
+						var bdry=polygon.getPath();
+
+						bdryarry.push(bdry);
+						// alert(bdryarry[0][0].lng);
+                        /*-----------------多边形右键删除-------------------------*/
+                        var polygonMenu = new BMap.ContextMenu();
+                        polygonMenu.addItem(new BMap.MenuItem('删除场景', function () {
+                            map.removeOverlay(polygon);
+                        }));
+					
+                        polygon.addContextMenu(polygonMenu);
+						polygon.addEventListener("click", function (e) {
+				 
+					    var title = '<h4>场景信息添加</h4>';
+					    var content = "<form method='post' action=''>" +
+                            "<table>" +
+                                "<tr>" +
+                                    "<td><b>地市：</b>" +
+                                        "<input type='text' id='text2'  name='Name' style='margin-top:10px;width:200px'/>" +
+                                    "</td>" +
+                                "</tr>" +
+                                "<tr >" +
+                                    "<td><b>场景名：</b>" +
+										"<input type='text' id='text3' name='Name' style='margin-top:15px;width:200px'/>" +
+                                    "</td>" +
+                                "</tr>" +
+								"<tr >" +
+                                    "<td><b>场景类型：</b>" +
+										"<input type='text' id='text4' name='Name' style='margin-top:20px;width:200px'/>" +
+                                    "</td>" +
+                                "</tr>" +
+                                "<tr>" +
+                                    "<td style='text-align:right;'>" +
+                                        "<input  onclick='savecj()' type='button' value='保存' style='width: 40px;line-height: 35px;'/>" +
+                                    "</td>" +
+                                "</tr>" +
+                            "</talbe>" +
+                        "</form>";
+					var infoWindow = new BMap.InfoWindow();
+					
+					infoWindow.setWidth(250),
+					infoWindow.setHeight(300),
+                      
+							infoWindow.setTitle(title)//设置信息头
+					      infoWindow.setContent(content)//设置信息内容
+					  overlay.addEventListener("click", function (e) {
+						var point = new BMap.Point(e.point.lng, e.point.lat);
+						map.openInfoWindow(infoWindow, point); //开启信息窗口
+					});
+                        });
+                    }
+						
+                    break;
+					case "circle":
+
+					{
+						var circle= e.overlay;
+        
+           var circlemenu=new BMap.ContextMenu();
+	        circlemenu.addItem(new BMap.MenuItem('删除圆形',function(){ 
+            map.removeOverlay( circle);
+              } ));
+
+           circle.addContextMenu(circlemenu);
+
+					}
+                    break;
+					case "rectangle":
+					{
+                      var retangxx= e.overlay;
+    
+					    var retanglemenu=new BMap.ContextMenu();
+					     retanglemenu.addItem(new BMap.MenuItem('删除矩形',function(){ 
+                        map.removeOverlay( retangxx);
+
+					   } ));
+					   retangxx.addContextMenu(retanglemenu);
+
+					}
+
+					break;
+            }
+        }
+    }
+    bmap.init();
+
+	map.addEventListener('rightclick', function (e) {
+		/*
+	 if(e.overlay)
+		 {//判断右键单击的是否是marker
+			 alert("请在别处创建哦！")
+			 return;
+		 }
+		 */
+		//console.log(e.point)
+		e.point;//{lng: 112.496976, lat: 26.965758}
+		RightClick(e.point);
+	})
+	function RightClick(d) {
+		
+		//map.addContextMenu.clearOverlays();
+		var ds = new BMap.Point(d);
+		var EventMarker = function (i) {
+			//addEventF是具体的菜单方法，要实现什么功能取决自身需求
+			//addEventF(s,w);
+			//var context_menu = document.getElementById("context_menu");
+			// console.log(i)
+			txtMenuItem[i].callback(i);
+		};
+
+
+
+		var markerMenu = new BMap.ContextMenu();
+		for (var i = 0; i < txtMenuItem.length; i++) {
+			var MenuItem = new BMap.MenuItem(txtMenuItem[i].text, txtMenuItem[i].callback, txtMenuItem[i].MenuItemOptions);
+			//MenuItem(text: String 设置菜单项的icon, callback: Function 事件, opts: MenuItemOptions)
+			//MenuItemOptions 
+			//width   Number	指定此菜单项的宽度，菜单以最长的菜单项宽度为准
+			//id      String    指定此菜单项dom的id
+			//iconUrl String | ContextMenuIcon  指定此菜单项的icon URL（大小为17px*17px）
+
+			//ContextMenuIcon 
+			//BMAP_CONTEXT_MENU_ICON_ZOOMIN	 放大图标
+			//BMAP_CONTEXT_MENU_ICON_ZOOMOUT 缩小图标
+
+			markerMenu.addItem(MenuItem);//EventMarker.bind(i)               
+		}
+		map.addContextMenu(markerMenu);//添加右键菜单
+
+	}
+
+	var txtMenuItem = [  //右键菜单项目  
+		{
+			text: '放大',
+			callback: function () { map.zoomIn() },
+			MenuItemOptions: { width: 140 }
+		},
+		{
+			text: '缩小',
+			callback: function () { map.zoomOut() },
+			MenuItemOptions: { width: 140 }
+		},
+		{
+			text: '放置到最大级',
+			callback: function () { map.setZoom(18) },
+			MenuItemOptions: { width: 140 }
+		},
+		{
+			text: '查看全国',
+			callback: function () { map.setZoom(4) },
+			MenuItemOptions: { width: 140 }
+		},
+		{
+			text: '在此添加标注',
+			callback: function (p) {
+				var marker = new BMap.Marker(p), px = map.pointToPixel(p);
+				map.addOverlay(marker);
+			},
+			MenuItemOptions: { width: 140 }
+		},
+		{
+			text: '显示/隐藏口碑场景',
+			callback: function () {
+				showtc(lngx,laty);
+			},
+			MenuItemOptions: { width: 140 }
+		},
+		{
+			text: '显示/隐藏口碑小区',
+			callback: function () {
+				showcellsector(lngx,laty);
+
+			},
+			MenuItemOptions: { width: 140 }
+		},
+		{
+			text: '显示/隐藏绘制图层',
+			callback: function () {
+				showdwtc(lngx,laty);
+
+			},
+			MenuItemOptions: { width: 140 }
+		}
+
+	];
+
+	var cjaryallx;
+	var pointall = [];
+	function ppcell() {
+		var ddjson3x = window.external.polygoncell();//getDebugPath()为c#方法
+
+		var ddObj3x = window.eval(ddjson3x);//json字符串转换为对象
+		cjaryallx = ddObj3x;
+
+		for (var i = 0; i < ddObj3x.length; i++) {
+			var points = ddObj3x[i].poiboundary;
+			var pointsArr = points.split(";");
+			var coods2 = pointsArr[0].split("-");
+			var pointx = new BMap.Point(coods2[0], coods2[1]);
+			pointall.push(pointx);
+		}
+
+
+	}
+
+
+	function showcity(city)
+	 {
+
+		 //alert("456");
+	  var strx1 = window.external.showcolorx();//getDebugPath()为c#方法
+	 
+	var valx = strx1.split(";");
+	var map = new BMap.Map("allmap");   // 创建Map实例
+	var point = new BMap.Point(valx[7], valx[8]);
+	var lngx1 = valx[7];
+	var laty1 = valx[8];
+
+	map.centerAndZoom(point, 15);  // 初始化地图,设置中心点坐标和地图级别
+	//添加地图类型控件
+	map.addControl(new BMap.MapTypeControl({
+		mapTypes: [
+			BMAP_NORMAL_MAP,
+			BMAP_HYBRID_MAP
+		]
+	}));
+	map.setCurrentCity(valx[6]);          // 设置地图显示的城市 此项是必须设置的
+	map.enableScrollWheelZoom(true);
+
+	showtc(lngx1,laty1);
+
+}
+
+	/*
+		map.addEventListener("click", function (e) {
+			   lngx = e.point.lng;
+			   laty = e.point.lat;
+		    
+		});
+		*/
+
+	//document.getElementById("info").innerHTML += "中心坐标:new BMap.Point(" + map.getCenter().lng + "," + map.getCenter().lat + ")</br>"
+
+	map.addEventListener("moveend", function (e) {
+		lngx = map.getCenter().lng;
+		laty = map.getCenter().lat;
+	});
+
+	//map.centerAndZoom(point2, 15);
+
+	//单击获取点击的经纬度
+
+	var polygonx;
+	var flg4 = true;
+	function pcultershow() {
+
+		if (flg4 == true) {
+			var ddjson = window.external.pcluster();//getDebugPath()为c#方法
+			var ddObj = window.eval(ddjson);//json字符串转换为对象
+			//cjary=ddObj;
+			//polygonArr.splice(0, polygonArr.length);//清空
+
+			//创建一个覆盖物数组
+			for (var i = 0; i < ddObj.length; i++) {
+				var points = ddObj[i].poiboundary;
+				var pointsArr = points.split(";");
+				var Mpoint = [];
+				for (var j = 0; j < pointsArr.length; j++) {
+					var coods = pointsArr[j].split("-");
+					Mpoint.push(new BMap.Point(coods[0] - 0, coods[1] - 0));
+
+				}
+
+				polygonx = new BMap.Polygon(Mpoint, {
+
+					strokeColor: 'red',
+					fillColor: "red",
+					strokeWeight: 1,
+					strokeOpacity: 0.2,
+					fillOpacity: 1
+				});
+
+				map.addOverlay(polygonx);
+			}
+			flg4 = false;
+		}
+		else {
+
+			var allOverlay2 = map.getOverlays();
+			for (var i = 0; i < allOverlay2.length; i++) {
+
+				if (allOverlay2[i].toString() == "[object Polygon]") {
+
+
+
+					if (allOverlay2[i].getStrokeWeight() == 1) {
+
+						map.removeOverlay(allOverlay2[i]);
+					}
+
+				}
+
+
+			}
+
+			flg4 = true;
+
+		}
+	}
+ 
+
+	//window.external.showinform();
+
+	var polygonArrx6 = [];
+	//var obj2 = {};
+	//根据场景匹配问题簇
+	function pcultershowxx(strx) {
+
+		var ddjson = window.external.pcluster();//getDebugPath()为c#方法
+
+		var ddObj = window.eval(ddjson);//json字符串转换为对象
+		//cjary=ddObj;
+		polygonArrx6.splice(0, polygonArrx6.length);//清空
+
+		//创建一个覆盖物数组
+		for (var i = 0; i < ddObj.length; i++) {
+
+			(function (y) {
+				if (ddObj[y].poiname == strx) {
+
+					//alert(ddObj[i].poiname);
+
+					var points = ddObj[i].poiboundary;
+					var pointsArr = points.split(";");
+					var Mpoint = [];
+					for (var j = 0; j < pointsArr.length; j++) {
+						var coods = pointsArr[j].split("-");
+						Mpoint.push(new BMap.Point(coods[0] - 0, coods[1] - 0));
+
+					}
+
+					polygonx = new BMap.Polygon(Mpoint, {
+						strokeColor: 'red',
+						fillColor: 'red',
+						strokeWeight: 3,
+						strokeOpacity: 0.2,
+						fillOpacity: 1
+					});
+
+					map.addOverlay(polygonx);
+					//polygonArrx6.push(polygonx);
+
+					var obj2 = {};
+					obj2.name = ddObj[y].poiname;
+
+					obj2.cuid = ddObj[y].cuid;
+					//alert(ddObj[i].poiname+"//"+ddObj[i].cuid);
+					obj2.cgi = ddObj[y].cgi;
+					obj2.polygon = polygonx;
+					polygonArrx6.push(obj2);
+
+				}
+			})(i);
+		}
+		//alert(polygonArrx6.length);
+		//alert(polygonArrx6[0].name+"//"+polygonArrx6[0].cuid);
+		//alert(polygonArrx6[1].name+"//"+polygonArrx6[1].cuid);
+		for (var k1 = 0; k1 < polygonArrx6.length; k1++) {
+			(function (x) {
+
+				var arycgi = polygonArrx6[x].cgi.split(";");
+				// alert(polygonArrx6[k1].name+"//"+polygonArrx6[k1].cuid);
+				var overlay = polygonArrx6[x].polygon;
+				// 创建信息窗口对象
+				var infoWindow = new BMap.InfoWindow();
+				//设置窗口文案和宽高
+				infoWindow.setWidth(250)
+				infoWindow.setHeight(200)
+
+				var top1;
+				var top2;
+				var top3;
+
+				if (arycgi[0] != null) {
+					top1 = arycgi[0];
+				}
+				else {
+					top1 = "无";
+				}
+				if (arycgi[1] != null) {
+					top2 = arycgi[1];
+				}
+				else {
+					top2 = "无";
+				}
+
+				if (arycgi[2] != null) {
+					top3 = arycgi[2];
+				}
+				else {
+					top3 = "无";
+				}
+				//超链接写法
+				// var content = 'top1:'+ "<div><a href='https://www.baidu.com/'>"+ top1 +"</a><div>"+'<br/>'
+				//var content = 'top1:'+ "<div><a href='showtc(lngx,laty)'>"+ top1 +"</a><div>"+'<br/>'
+				//alert(top1);
+				var title = '<h4>问题小区看板</h4>';
+				var content = 'top1:' + '<a href="#" onclick="window.external.showinform(\'' + top1 + '\')">' + top1 + '</a>' + '<br/>'
+				content += 'top2: ' + '<a href="#" onclick="window.external.showinform(\'' + top2 + '\')">' + top2 + '</a>' + '<br/>'
+				content += 'top3: ' + '<a href="#" onclick="window.external.showinform(\'' + top3 + '\')">' + top3 + '</a>' + '<br/>'
+
+				//alert(top1);
+
+				infoWindow.setTitle(title)//设置信息头
+				infoWindow.setContent(content)//设置信息内容
+
+				overlay.addEventListener("click", function (e) {
+					var point = new BMap.Point(e.point.lng, e.point.lat);
+					map.openInfoWindow(infoWindow, point); //开启信息窗口
+				});
+
+
+				/*-----------------多边形右键菜单弹出添加拉线-------------------------*/
+				// alert(k1);
+				   var polygonMenu = new BMap.ContextMenu();
+				    polygonMenu.addItem(new BMap.MenuItem('问题小区显示', function () {
+					drawpolygon(polygonArrx6[x].name + polygonArrx6[x].cuid);
+
+				}));
+				//alert(polygonArrx6[k1].name+"\\"+k1);
+				polygonArrx6[x].polygon.addContextMenu(polygonMenu);
+
+			})(k1);
+
+
+		}
+
+	}
+
+
+//定义一些常量
+var x_PI = 3.14159265358979324 * 3000.0 / 180.0;
+var PI = 3.1415926535897932384626;
+var a = 6378245.0;
+var ee = 0.00669342162296594323;
+
+
+/**
+ * bd 转换为 gcj02
+ */
+	function bd09togcj02(bd_lon, bd_lat) {
+    var x_pi = 3.14159265358979324 * 3000.0 / 180.0;
+    var x = bd_lon - 0.0065;
+    var y = bd_lat - 0.006;
+    var z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * x_pi);
+    var theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * x_pi);
+    var gg_lng = z * Math.cos(theta);
+    var gg_lat = z * Math.sin(theta);
+    return [gg_lng, gg_lat]
+}
+
+
+
+/**
+ * GCJ02 转换为 WGS84
+ */
+ function gcj02towgs84(lng, lat) {
+    if (out_of_china(lng, lat)) {
+        return [lng, lat]
+    }
+    else {
+        var dlat = transformlat(lng - 105.0, lat - 35.0);
+        var dlng = transformlng(lng - 105.0, lat - 35.0);
+        var radlat = lat / 180.0 * PI;
+        var magic = Math.sin(radlat);
+        magic = 1 - ee * magic * magic;
+        var sqrtmagic = Math.sqrt(magic);
+        dlat = (dlat * 180.0) / ((a * (1 - ee)) / (magic * sqrtmagic) * PI);
+        dlng = (dlng * 180.0) / (a / sqrtmagic * Math.cos(radlat) * PI);
+        mglat = lat + dlat;
+        mglng = lng + dlng;
+        return [lng * 2 - mglng, lat * 2 - mglat]
+    }
+}
+
+ 
+function transformlat(lng, lat) {
+    var ret = -100.0 + 2.0 * lng + 3.0 * lat + 0.2 * lat * lat + 0.1 * lng * lat + 0.2 * Math.sqrt(Math.abs(lng));
+    ret += (20.0 * Math.sin(6.0 * lng * PI) + 20.0 * Math.sin(2.0 * lng * PI)) * 2.0 / 3.0;
+    ret += (20.0 * Math.sin(lat * PI) + 40.0 * Math.sin(lat / 3.0 * PI)) * 2.0 / 3.0;
+    ret += (160.0 * Math.sin(lat / 12.0 * PI) + 320 * Math.sin(lat * PI / 30.0)) * 2.0 / 3.0;
+    return ret
+}
+ 
+function transformlng(lng, lat) {
+    var ret = 300.0 + lng + 2.0 * lat + 0.1 * lng * lng + 0.1 * lng * lat + 0.1 * Math.sqrt(Math.abs(lng));
+    ret += (20.0 * Math.sin(6.0 * lng * PI) + 20.0 * Math.sin(2.0 * lng * PI)) * 2.0 / 3.0;
+    ret += (20.0 * Math.sin(lng * PI) + 40.0 * Math.sin(lng / 3.0 * PI)) * 2.0 / 3.0;
+    ret += (150.0 * Math.sin(lng / 12.0 * PI) + 300.0 * Math.sin(lng / 30.0 * PI)) * 2.0 / 3.0;
+    return ret
+}
+
+ 
+
+/**
+ * 判断是否在国内，不在国内则不做偏移
+ */
+ function out_of_china(lng, lat) {
+    return (lng < 72.004 || lng > 137.8347) || ((lat < 0.8293 || lat > 55.8271) || false);
+
+ }
+
+  function savecj()
+  {
+
+	var ds = document.getElementById("text2").value  //text为文本框的id ,原生写法
+	var cjnamex = document.getElementById("text3").value  //text为文本框的id ,原生写法
+ 
+	var cjtypx = document.getElementById("text4").value  //text为文本框的id ,原生写法
+ 
+     if( ds=="")
+	 {
+		alert("地市不能为空");
+		return;
+
+	 }
+	 else if(cjnamex=="")
+	 {
+		alert("场景名称不能为空");
+		return;
+
+	 }
+
+	 else if(cjtypx=="")
+	 {
+		alert("场景类型不能为空");
+		return;
+
+	 }
+
+	
+	var strxx="";
+	  //alert(bdryarry[0][0].lng);
+     //alert(bdryarry.length);
+  for(var i=0;i<bdryarry[0].length;i++)
+  {
+      var lngx2=bdryarry[0][i].lng;
+	  var latx2=bdryarry[0][i].lat;
+	    var aryx1= bd09togcj02(lngx2,latx2);
+	    var aryx2= gcj02towgs84(aryx1[0], aryx1[1]);
+
+        // alert(strxx);
+	     strxx=strxx+";"+aryx2[0]+"-"+aryx2[1];
+  }
+     strxx=strxx.substring(1,strxx.length-1);
+	 var str22=strxx.split(";")[0];
+	     strxx=strxx+";"+str22;
+	  //alert(strxx);
+
+	   window.external.savecjpoi(ds,cjnamex, strxx,cjtypx );
+      alert("保存成功");
+    
+  }
+
+
+
+
+  //绘制场景显示
+   var polygonArrxdw2 = [];
+	var polygonArrdw1 = [];
+	var polygondw;
+	var labeldw;
+   var flgdw=true;
+   var pointsxdw = [];
+
+ function showdwtc( lngx,laty)
+{
+
+	if (flgdw == true) {
+
+  var ddjson = window.external.poinfordw(lngx,laty);//getDebugPath()为c#方法
+
+  var ddObj = window.eval(ddjson);//json字符串转换为对象
+  // cjary = ddObj;
+  // objpoix = ddObj;
+   //alert(ddObj.length);
+  polygonArrdw1.splice(0, polygonArrdw1.length);
+  polygonArrxdw2.splice(0, polygonArrxdw2.length)
+//创建一个覆盖物数组
+for (var i = 0; i < ddObj.length; i++) {
+	var points = ddObj[i].poiboundary;
+	var pointsArr = points.split(";");
+	var Mpoint = [];
+	for (var j = 0; j < pointsArr.length; j++) {
+		var coods = pointsArr[j].split("-");
+		Mpoint.push(new BMap.Point(coods[0] - 0, coods[1] - 0));
+
+	}
+
+	var coods2 = pointsArr[0].split("-");
+
+		polygondw = new BMap.Polygon(Mpoint, {
+
+			strokeColor: 'cyan',
+			fillColor: 'cyan',
+			strokeWeight: 3.5,
+			strokeOpacity: 0.2,
+			fillOpacity: 0.8
+		});
+
+
+	var pointx = new BMap.Point(coods2[0] - 0, coods2[1] - 0);
+	  pointsxdw.push(pointx);
+	var opts = {
+		position: pointx,    // 指定文本标注所在的地理位置
+		offset: new BMap.Size(10, -10)    //设置文本偏移量
+	}
+	//var label = new BMap.Label(ddObj[i].poiname, opts);  // 创建文本标注对象
+
+
+	labeldw = new BMap.Label(ddObj[i].poiname, opts);  // 创建文本标注对象
+	labeldw.setStyle({
+		color: "black",
+		fontSize: "12px",
+		height: "20px",
+		lineHeight: "20px",
+		fontFamily: "微软雅黑",
+		backgroundColor: "0.05", //文本标注背景颜色　
+		border: "0"
+
+
+	});
+
+	labeldw.setTitle("1.5");
+	map.addOverlay(polygondw);
+	map.addOverlay(labeldw);
+	polygonArrdw1.push(polygondw);
+
+	var obj = {};
+	obj.name = ddObj[i].poiname;
+	obj.polygon = polygondw;
+	obj.labelx=labeldw;
+	polygonArrxdw2.push(obj)
+
+}
+
+//alert(123);
+
+//alert(polygonArrxdw[0].name+"//"+polygonArrxdw[1].name)
+//alert(polygonArrxdw[0].polygon+"//"+polygonArrxdw[1].polygon)
+ 
+for (var k = 0; k < polygonArrxdw2.length; k++) {
+
+	(function (x) {
+		var overlay = polygonArrdw1[x];
+		// 创建信息窗口对象
+		var infoWindow = new BMap.InfoWindow();
+		//设置窗口文案和宽高
+		infoWindow.setWidth(250)
+		infoWindow.setHeight(200)
+
+		var title = '<h4>场景基本信息</h4>';
+		var content = '场景名称: ' + ddObj[x].poiname + '<br/>'
+		content += '场景类型: ' + ddObj[x].cjtye + '<br/>'
+		
+
+		infoWindow.setTitle(title)//设置信息头
+		infoWindow.setContent(content)//设置信息内容
+		overlay.addEventListener("click", function (e) {
+			var point = new BMap.Point(e.point.lng, e.point.lat);
+			map.openInfoWindow(infoWindow, point); //开启信息窗口
+		});
+
+
+		/*-----------------多边形右键菜单-------------------------*/
+
+		var polygonMenu = new BMap.ContextMenu();
+
+		polygonMenu.addItem(new BMap.MenuItem('删除该场景', function () {
+			 
+			   window.external.deletepoi(polygonArrxdw2[x].name);  
+			   map.removeOverlay(polygonArrxdw2[x].polygon);
+			   map.removeOverlay(polygonArrxdw2[x].labelx);
+			   alert("删除成功"); 
+			 
+		}));
+	 
+		polygonArrxdw2[x].polygon.addContextMenu(polygonMenu);
+
+	})(k);
+
+}
+
+flgdw = false;
+}
+
+else if (flgdw == false)
+ {
+var allOverlay = map.getOverlays();
+for (var i = 0; i < allOverlay.length; i++)
+ {
+
+	if (allOverlay[i].toString() == "[object Polygon]") {
+
+		if (allOverlay[i].getStrokeWeight() == 3.5) {
+
+			map.removeOverlay(allOverlay[i]);
+		}
+
+	}
+	else if (allOverlay[i].toString() == "[object Label]") {
+
+		if (allOverlay[i].getTitle() == "1.5") {
+
+			map.removeOverlay(allOverlay[i]);
+		}
+
+
+	}
+ 
+
+
+}
+
+
+
+flgdw = true;
+
+}
+
+
+}
+
+
+	var objx = new Object();
+	var polygonArrx1 = [];
+	var polygonArr = [];
+
+	var polygon;
+	var polygoncell;
+	var circle;
+	var label;
+	var labelcell;
+
+	var cjary;
+
+	var objpoix =[];
+	var pointsx = [];
+	var flg2 = true;
+
+	var txtMenuItemx = [  //右键菜单项目  
+		{
+			text: '删除多边形',
+			callback: function () { map.zoomIn() }
+		},
+
+		{
+			text: '问题簇显示',
+			callback: function () { pcultershow() }
+		},
+
+
+	];
+
+	function showtc(lngx,laty) {
+
+		if (flg2 == true) {
+
+			var ddjson = window.external.poinfor(lngx,laty);//getDebugPath()为c#方法
+
+			var ddObj = window.eval(ddjson);//json字符串转换为对象
+			   cjary = ddObj;
+			   objpoix = ddObj;
+			   
+			  polygonArr.splice(0, polygonArr.length);
+			  polygonArrx1.splice(0, polygonArrx1.length)
+			//创建一个覆盖物数组
+			for (var i = 0; i < ddObj.length; i++) {
+				var points = ddObj[i].poiboundary;
+				var pointsArr = points.split(";");
+				var Mpoint = [];
+				for (var j = 0; j < pointsArr.length; j++) {
+					var coods = pointsArr[j].split("-");
+					Mpoint.push(new BMap.Point(coods[0] - 0, coods[1] - 0));
+
+				}
+
+				var coods2 = pointsArr[0].split("-");
+
+				if (ddObj[i].qtpj == "差") {
+
+					polygon = new BMap.Polygon(Mpoint, {
+
+						strokeColor: 'red',
+						fillColor: 'red',
+						strokeWeight: 3,
+						strokeOpacity: 0.2,
+						fillOpacity: 0.2
+					});
+
+				}
+				else if (ddObj[i].qtpj == "良") {
+					polygon = new BMap.Polygon(Mpoint, {
+
+						strokeColor: 'yellow',
+						fillColor: "yellow",
+						strokeWeight: 3,
+						strokeOpacity: 0.2,
+						fillOpacity: 0.7
+
+					});
+
+				}
+				else if (ddObj[i].qtpj == "优") {
+
+					polygon = new BMap.Polygon(Mpoint, {
+
+						strokeColor: 'blue',
+						fillColor: "blue",
+						strokeWeight: 3,
+						strokeOpacity: 0.2,
+						fillOpacity: 0.7
+
+					});
+
+				}
+				else {
+
+					polygon = new BMap.Polygon(Mpoint, {
+
+						strokeColor: 'black',
+						fillColor: "black",
+						strokeWeight: 3,
+						strokeOpacity: 0.5
+
+					});
+				}
+
+				var pointx = new BMap.Point(coods2[0] - 0, coods2[1] - 0);
+				pointsx.push(pointx);
+				var opts = {
+					position: pointx,    // 指定文本标注所在的地理位置
+					offset: new BMap.Size(10, -10)    //设置文本偏移量
+				}
+				//var label = new BMap.Label(ddObj[i].poiname, opts);  // 创建文本标注对象
+
+				label = new BMap.Label(ddObj[i].poiname, opts);  // 创建文本标注对象
+				label.setStyle({
+					color: "black",
+					fontSize: "12px",
+					height: "20px",
+					lineHeight: "20px",
+					fontFamily: "微软雅黑",
+					backgroundColor: "0.05", //文本标注背景颜色　
+					border: "0"
+
+
+				});
+
+				label.setTitle("1");
+				map.addOverlay(polygon);
+				map.addOverlay(label);
+				polygonArr.push(polygon);
+
+				var obj = {};
+				obj.name = ddObj[i].poiname;
+				obj.polygon = polygon;
+				polygonArrx1.push(obj)
+
+			}
+
+			for (var k = 0; k < polygonArr.length; k++) {
+
+				(function (x) {
+					var overlay = polygonArr[x];
+					// 创建信息窗口对象
+					var infoWindow = new BMap.InfoWindow();
+					//设置窗口文案和宽高
+					infoWindow.setWidth(250)
+					infoWindow.setHeight(370)
+
+					var title = '<h4>口碑场景信息看板</h4>';
+					var content = '场景名称: ' + ddObj[x].poiname + '<br/>'
+					content += '场景价值评分: ' + ddObj[x].valueall + '<br/>'
+					content += '区县: ' + ddObj[x].quxian + '<br/>'
+					content += '场景类型: ' + ddObj[x].cjtye + '<br/>'
+					content += '覆盖类别: ' + ddObj[x].fglb + '<br/>'
+					content += '场景面积（平方米）:' + ddObj[x].area + '<br/>'
+					content += '累计投诉次数: ' + ddObj[x].tsnum + '<br/>'
+					content += '场景评级：' + ddObj[x].qtpj + '<br/>'
+					content += '差小区比例: ' + ddObj[x].badpp + '<br/>'
+					content += '问题小区数量: ' + ddObj[x].badcellnum + '<br/>'
+					content += '场景小区总数: ' + ddObj[x].cellnum + '<br/>'
+					content += '小区完整性: ' + ddObj[x].kpiall + '<br/>'
+					content += '场景差纬度: ' + ddObj[x].badqustion;
+
+					infoWindow.setTitle(title)//设置信息头
+					infoWindow.setContent(content)//设置信息内容
+					overlay.addEventListener("click", function (e) {
+						var point = new BMap.Point(e.point.lng, e.point.lat);
+						map.openInfoWindow(infoWindow, point); //开启信息窗口
+					});
+
+
+					/*-----------------多边形右键菜单-------------------------*/
+
+					var polygonMenu = new BMap.ContextMenu();
+
+					polygonMenu.addItem(new BMap.MenuItem('问题簇显示', function () {
+						pcultershowxx(polygonArrx1[x].name)
+					}));
+
+					polygonMenu.addItem(new BMap.MenuItem('关闭其他场景', function () {
+						showsinglepoix(polygonArrx1[x].name,lngx,laty)
+					}));
+                             
+					polygonArrx1[x].polygon.addContextMenu(polygonMenu);
+
+
+				})(k);
+
+
+			}
+
+
+			flg2 = false;
+		}
+
+		else if (flg2 == false) {
+
+			var allOverlay = map.getOverlays();
+			for (var i = 0; i < allOverlay.length; i++) {
+
+				if (allOverlay[i].toString() == "[object Polygon]") {
+
+
+
+					if (allOverlay[i].getStrokeWeight() == 3) {
+
+						map.removeOverlay(allOverlay[i]);
+					}
+
+				}
+				else if (allOverlay[i].toString() == "[object Label]") {
+
+					if (allOverlay[i].getTitle() == "1") {
+
+						map.removeOverlay(allOverlay[i]);
+					}
+
+
+				}
+				else if (allOverlay[i].toString() == "[object Polyline]") {
+
+              
+
+             	map.removeOverlay(allOverlay[i]);
+                
+
+
+                 }
+				 else if (allOverlay[i].toString() == "[object Circle]") {
+
+            if  (allOverlay[i].getStrokeWeight() == 1.5) {
+
+	              map.removeOverlay(allOverlay[i]);
+                 }
+
+
+}
+
+			}
+
+			flg2 = true;
+
+		}
+
+
+	}
+
+//单场景显示
+
+function showsinglepoix(cjname,lngx,laty) {
+
+	var polygonArrx1 = [];
+	var polygonArr = [];
+
+	    //alert(cjname);
+		var allOverlay = map.getOverlays();
+	   for (var i = 0; i < allOverlay.length; i++) {
+
+		if (allOverlay[i].toString() == "[object Polygon]") {
+
+			if (allOverlay[i].getStrokeWeight() == 3) {
+
+				map.removeOverlay(allOverlay[i]);
+			}
+
+		}
+		else if (allOverlay[i].toString() == "[object Label]") {
+
+			if (allOverlay[i].getTitle() == "1") {
+
+				map.removeOverlay(allOverlay[i]);
+			}
+
+
+		}
+		else if (allOverlay[i].toString() == "[object Polyline]") {
+
+		 map.removeOverlay(allOverlay[i]);
+		
+		 }
+		 else if (allOverlay[i].toString() == "[object Circle]") {
+
+	if  (allOverlay[i].getStrokeWeight() == 1.5) {
+
+		  map.removeOverlay(allOverlay[i]);
+		 }
+
+      }
+
+	}
+
+	var ddjson = window.external.poinforsingle(cjname,lngx,laty);//getDebugPath()为c#方法
+
+	var ddObj = window.eval(ddjson);//json字符串转换为对象
+	   //cjary = ddObj;
+	  // alert(ddObj.length);
+
+	  polygonArr.splice(0, polygonArr.length);
+	  polygonArrx1.splice(0, polygonArrx1.length)
+	//创建一个覆盖物数组
+	for (var i = 0; i < ddObj.length; i++) {
+		var points = ddObj[i].poiboundary;
+		var pointsArr = points.split(";");
+		var Mpoint = [];
+		for (var j = 0; j < pointsArr.length; j++) {
+			var coods = pointsArr[j].split("-");
+			Mpoint.push(new BMap.Point(coods[0] - 0, coods[1] - 0));
+
+		}
+
+		var coods2 = pointsArr[0].split("-");
+
+		if (ddObj[i].qtpj == "差") {
+
+			polygon = new BMap.Polygon(Mpoint, {
+
+				strokeColor: 'red',
+				fillColor: 'red',
+				strokeWeight: 3,
+				strokeOpacity: 0.2,
+				fillOpacity: 0.2
+			});
+
+		}
+		else if (ddObj[i].qtpj == "良") {
+			polygon = new BMap.Polygon(Mpoint, {
+
+				strokeColor: 'yellow',
+				fillColor: "yellow",
+				strokeWeight: 3,
+				strokeOpacity: 0.2,
+				fillOpacity: 0.7
+
+			});
+
+		}
+		else if (ddObj[i].qtpj == "优") {
+
+			polygon = new BMap.Polygon(Mpoint, {
+
+				strokeColor: 'blue',
+				fillColor: "blue",
+				strokeWeight: 3,
+				strokeOpacity: 0.2,
+				fillOpacity: 0.7
+
+			});
+
+		}
+		else {
+
+			polygon = new BMap.Polygon(Mpoint, {
+
+				strokeColor: 'black',
+				fillColor: "black",
+				strokeWeight: 3,
+				strokeOpacity: 0.5
+
+			});
+		}
+
+		var pointx = new BMap.Point(coods2[0] - 0, coods2[1] - 0);
+		pointsx.push(pointx);
+		var opts = {
+			position: pointx,    // 指定文本标注所在的地理位置
+			offset: new BMap.Size(10, -10)    //设置文本偏移量
+		}
+		//var label = new BMap.Label(ddObj[i].poiname, opts);  // 创建文本标注对象
+
+		label = new BMap.Label(ddObj[i].poiname, opts);  // 创建文本标注对象
+		label.setStyle({
+			color: "black",
+			fontSize: "12px",
+			height: "20px",
+			lineHeight: "20px",
+			fontFamily: "微软雅黑",
+			backgroundColor: "0.05", //文本标注背景颜色　
+			border: "0"
+
+
+		});
+
+		label.setTitle("1");
+		map.addOverlay(polygon);
+		map.addOverlay(label);
+		polygonArr.push(polygon);
+
+		var obj = {};
+		obj.name = ddObj[i].poiname;
+		obj.polygon = polygon;
+		polygonArrx1.push(obj)
+
+	}
+
+	for (var k = 0; k < polygonArr.length; k++) {
+
+		(function (x) {
+			var overlay = polygonArr[x];
+			// 创建信息窗口对象
+			var infoWindow = new BMap.InfoWindow();
+			//设置窗口文案和宽高
+			infoWindow.setWidth(250)
+			infoWindow.setHeight(370)
+
+			var title = '<h4>口碑场景信息看板</h4>';
+			var content = '场景名称: ' + ddObj[x].poiname + '<br/>'
+			content += '场景价值评分: ' + ddObj[x].valueall + '<br/>'
+			content += '区县: ' + ddObj[x].quxian + '<br/>'
+			content += '场景类型: ' + ddObj[x].cjtye + '<br/>'
+			content += '覆盖类别: ' + ddObj[x].fglb + '<br/>'
+			content += '场景面积（平方米）:' + ddObj[x].area + '<br/>'
+			content += '累计投诉次数: ' + ddObj[x].tsnum + '<br/>'
+			content += '场景评级：' + ddObj[x].qtpj + '<br/>'
+			content += '差小区比例: ' + ddObj[x].badpp + '<br/>'
+			content += '问题小区数量: ' + ddObj[x].badcellnum + '<br/>'
+			content += '场景小区总数: ' + ddObj[x].cellnum + '<br/>'
+			content += '小区完整性: ' + ddObj[x].kpiall + '<br/>'
+			content += '场景差纬度: ' + ddObj[x].badqustion;
+
+			infoWindow.setTitle(title)//设置信息头
+			infoWindow.setContent(content)//设置信息内容
+			overlay.addEventListener("click", function (e) {
+				var point = new BMap.Point(e.point.lng, e.point.lat);
+				map.openInfoWindow(infoWindow, point); //开启信息窗口
+			});
+
+
+			/*-----------------多边形右键菜单-------------------------*/
+
+			var polygonMenu = new BMap.ContextMenu();
+
+			polygonMenu.addItem(new BMap.MenuItem('问题簇显示', function () {
+				pcultershowxx(polygonArrx1[x].name)
+			}));
+
+			polygonMenu.addItem(new BMap.MenuItem('隐藏其他场景', function () {
+				showsinglepoix(polygonArrx1[x].name)
+			}));
+					 
+			polygonArrx1[x].polygon.addContextMenu(polygonMenu);
+
+
+		})(k);
+
+	}
+
+
+}
+
+//var flgboox1=false;
+/*
+function showsinglepoi(cjname)
+{
+
+	      var allOverlay = map.getOverlays();
+			for (var i = 0; i < allOverlay.length; i++)
+			 {
+
+				if ( allOverlay[i].toString() == "[object Polygon]")
+				 {
+					
+
+					if (allOverlay[i].getStrokeWeight() == 3) {
+						
+					   alert(i+"//"+k2);
+						
+						if( i!=k3)
+					   {
+						 
+						
+						 alert(cjary[k2].poiname+"//"+cjname);
+					      //continue;
+						  map.removeOverlay(allOverlay[i]);
+						  
+						 
+				      }
+					  k2++;
+
+			       
+				}
+
+				}
+
+			}
+
+}
+*/
+
+	//显示问题小区
+	var polygonlinex;
+	var polygoncell2;
+	var polygoncell3;
+	var circle3;
+	var labelcellx
+	function drawpolygon(strcj) {
+
+		//问题簇折线
+		var ddjsonline = window.external.cellpolygonline();//getDebugPath()为c#方法
+		var ddObjline = window.eval(ddjsonline);//json字符串转换为对象
+
+
+		var strx = window.external.showcolorx();//getDebugPath()为c#方法
+		var val = strx.split(";");
+
+		//polygonArrx6.splice(0, polygonArr.length);//清空
+
+		for (var i = 0; i < ddObjline.length; i++) {
+
+			if ((ddObjline[i].poiname + ddObjline[i].cuid) == strcj) {
+				var points = ddObjline[i].poiboundary;
+				var pointsArr = points.split(";");
+				var Mpoint = [];
+				var Mpointcell = [];
+
+
+				var coods = pointsArr[0].split("-");
+				if (ddObjline[i].lngline == 0) {
+					continue;
+				}
+				Mpoint.push(new BMap.Point(coods[0], coods[1]));
+				Mpoint.push(new BMap.Point(ddObjline[i].lngline, ddObjline[i].latline));
+				//创建折线，小区经纬度，边框经纬度
+
+
+
+				polygonlinex = new BMap.Polyline(Mpoint,
+					{
+						strokeColor: "green",
+						strokeWeight: 2,
+						strokeOpacity: 0.5
+					});
+
+
+				map.addOverlay(polygonlinex);
+				var cellbdry = ddObjline[i].cellbdry;
+				var pointsArrcell = cellbdry.split(";");
+				var coods2 = pointsArrcell[1].split("-");//微站室分使用位置
+				for (var k2 = 0; k2 < pointsArrcell.length; k2++) {
+					var coodsx = pointsArrcell[k2].split("-");
+					//alert(coods);
+					Mpointcell.push(new BMap.Point(coodsx[0], coodsx[1]));
+
+				}
+				//alert(ddObjline[i].covertyp);
+				// alert(ddObjline[i].pd);
+				// alert(Mpointcell);
+				if (ddObjline[i].covertyp == "室外") {
+					if (ddObjline[i].pd == "D") {
+
+						polygoncell3 = new BMap.Polygon(Mpointcell, {
+							strokeColor: val[0],
+							fillColor: val[0],
+							strokeWeight: 3,
+							strokeOpacity: 0.5
+
+						});
+
+					}
+					else if (ddObjline[i].pd == "F") {
+
+
+						polygoncell3 = new BMap.Polygon(Mpointcell, {
+							strokeColor: val[1],
+							fillColor: val[1],
+							strokeWeight: 3,
+							strokeOpacity: 0.5
+
+						});
+
+					}
+					else if (ddObjline[i].pd == "E") {
+
+						polygoncell3 = new BMap.Polygon(Mpointcell, {
+							strokeColor: val[2],
+							fillColor: val[2],
+							strokeWeight: 3,
+							strokeOpacity: 0.5
+
+						});
+
+
+					}
+
+					else if (ddObjline[i].pd == "A") {
+
+						polygoncell3 = new BMap.Polygon(Mpointcell, {
+							strokeColor: val[3],
+							fillColor: val[3],
+							strokeWeight: 3,
+							strokeOpacity: 0.5
+
+						});
+					}
+
+					else if (ddObjline[i].pd == "FDD900") {
+
+						polygoncell3 = new BMap.Polygon(Mpointcell, {
+							strokeColor: val[4],
+							fillColor: val[4],
+							strokeWeight: 3,
+							strokeOpacity: 0.5
+
+						});
+
+					}
+					else if (ddObjline[i].pd == "FDD1800") {
+
+						polygoncell3 = new BMap.Polygon(Mpointcell, {
+							strokeColor: val[5],
+							fillColor: val[5],
+							strokeWeight: 3,
+							strokeOpacity: 0.5
+
+						});
+
+					}
+					else {
+
+						polygoncell3 = new BMap.Polygon(Mpointcell, {
+							strokeColor: 'pine',
+							fillColor: 'pine',
+							strokeWeight: 3,
+							strokeOpacity: 0.5
+
+						});
+
+					}
+
+					map.addOverlay(polygoncell3);
+				}
+				else {
+
+					circle3 = new BMap.Circle(new BMap.Point(coods2[0], coods2[1]), 10, {
+						strokeColor: 'violet',
+						fillColor: 'violet',
+						fillOpacity: 0.6,
+						strokeWeight: 1.5,
+						strokeOpacity: 0.5
+					});
+					//alert(ddObjline[i].cgi+"\\"+ddObjline[i].centerlng+"\\"+ddObjline[i].centerlat+"\\"+ddObjline[i].covertyp+"\\"+circle3);
+					map.addOverlay(circle3);
+
+				}
+
+				var point = new BMap.Point(coods2[0] - 0, coods2[1] - 0);
+				var opts = {
+
+					position: point,    // 指定文本标注所在的地理位置
+					offset: new BMap.Size(20, -20)    //设置文本偏移量
+				}
+				//var label = new BMap.Label(ddObj[i].poiname, opts);  // 创建文本标注对象
+				labelcellx = new BMap.Label(ddObjline[i].cellname, opts);  // 创建文本标注对象
+				labelcellx.setStyle({
+					color: "black",
+					fontSize: "15px",
+					height: "20px",
+					lineHeight: "20px",
+					fontFamily: "宋体",
+					backgroundColor: "0.05", //文本标注背景颜色　
+					border: "0"
+
+				});
+				labelcellx.setTitle("2");
+
+				map.addOverlay(labelcellx);
+
+
+			}
+
+
+
+
+		}
+
+	}
+
+	var flg3 = true;
+
+	function showcellsector(lngx,laty) {
+
+		if (flg3 == true) {
+			var ddjson = window.external.cellinfor(lngx,laty);//getDebugPath()为c#方法
+			var ddObj = window.eval(ddjson);//json字符串转换为对象
+			var strx = window.external.showcolorx();//getDebugPath()为c#方法
+			var val = strx.split(";");
+
+			for (var i = 0; i < ddObj.length; i++) {
+				var points = ddObj[i].poiboundary;
+				var pointsArr = points.split(";");
+				var Mpoint = [];
+				for (var j = 0; j < pointsArr.length; j++) {
+					var coods = pointsArr[j].split("-");
+					Mpoint.push(new BMap.Point(coods[0] - 0, coods[1] - 0));
+
+				}
+
+				var coods2 = pointsArr[1].split("-");//微站室分使用位置
+				//var coodstt = pointsArr[1].split("-");//文本使用
+
+				// var pointlabel=new map.Point(coodstt[0] - 0, coodstt[1] - 0); 
+
+				if (ddObj[i].covetyp == "室外") {
+					if (ddObj[i].acfur == "D") {
+
+						polygoncell = new BMap.Polygon(Mpoint, {
+							strokeColor: val[0],
+							fillColor: val[0],
+							strokeWeight: 2,
+							strokeOpacity: 0.5
+
+						});
+
+					}
+					else if (ddObj[i].acfur == "F") {
+						polygoncell = new BMap.Polygon(Mpoint, {
+							strokeColor: val[1],
+							fillColor: val[1],
+							strokeWeight: 2,
+							strokeOpacity: 0.5
+
+						});
+
+
+					}
+					else if (ddObj[i].acfur == "E") {
+
+						polygoncell = new BMap.Polygon(Mpoint, {
+							strokeColor: val[2],
+							fillColor: val[2],
+							strokeWeight: 2,
+							strokeOpacity: 0.5
+
+						});
+
+
+					}
+
+					else if (ddObj[i].acfur == "A") {
+
+						polygoncell = new BMap.Polygon(Mpoint, {
+							strokeColor: val[3],
+							fillColor: val[3],
+							strokeWeight: 2,
+							strokeOpacity: 0.5
+
+						});
+					}
+
+					else if (ddObj[i].acfur == "FDD900") {
+
+						polygoncell = new BMap.Polygon(Mpoint, {
+							strokeColor: val[4],
+							fillColor: val[4],
+							strokeWeight: 2,
+							strokeOpacity: 0.5
+
+						});
+
+					}
+					else if (ddObj[i].acfur == "FDD1800") {
+
+						polygoncell = new BMap.Polygon(Mpoint, {
+							strokeColor: val[5],
+							fillColor: val[5],
+							strokeWeight: 2,
+							strokeOpacity: 0.5
+
+						});
+
+					}
+					else {
+
+						polygoncell = new BMap.Polygon(Mpoint, {
+							strokeColor: 'pine',
+							fillColor: 'pine',
+							strokeWeight: 2,
+							strokeOpacity: 0.5
+
+						});
+
+					}
+
+					map.addOverlay(polygoncell);
+				}
+				else {
+
+					circle = new BMap.Circle(new BMap.Point(ddObj[i].lng, ddObj[i].lat), 20, {
+						strokeColor: 'violet',
+						fillColor: 'violet',
+						strokeWeight: 2,
+						strokeOpacity: 0.5
+					});
+
+					map.addOverlay(circle);
+
+				}
+
+				var point = new BMap.Point(coods2[0] - 0, coods2[1] - 0);
+				var opts = {
+
+					position: point,    // 指定文本标注所在的地理位置
+					offset: new BMap.Size(20, -20)    //设置文本偏移量
+				}
+				//var label = new BMap.Label(ddObj[i].poiname, opts);  // 创建文本标注对象
+				labelcell = new BMap.Label(ddObj[i].poiname, opts);  // 创建文本标注对象
+				labelcell.setStyle({
+					color: "black",
+					fontSize: "12px",
+					height: "20px",
+					lineHeight: "20px",
+					fontFamily: "微软雅黑",
+					backgroundColor: "0.05", //文本标注背景颜色　
+					border: "0"
+
+				});
+				labelcell.setTitle("2");
+
+				map.addOverlay(labelcell);
+
+			}
+
+
+			flg3 = false
+		}
+		else {
+			var allOverlay = map.getOverlays();
+			for (var i = 0; i < allOverlay.length; i++) {
+
+				if (allOverlay[i].toString() == "[object Polygon]") {
+
+
+
+					if (allOverlay[i].getStrokeWeight() == 2) {
+
+						map.removeOverlay(allOverlay[i]);
+					}
+
+				}
+				else if (allOverlay[i].toString() == "[object Label]") {
+
+					if (allOverlay[i].getTitle() == "2") {
+
+						map.removeOverlay(allOverlay[i]);
+					}
+
+
+				}
+				else if (allOverlay[i].toString() == "[object Circle]") {
+
+					if (allOverlay[i].getStrokeWeight() == 2) {
+
+						map.removeOverlay(allOverlay[i]);
+					}
+
+
+				}
+
+			}
+
+			flg3 = true;
+
+		}
+
+	}
+/*
+	function cjfind() {
+
+		var allOverlay = map.getOverlays();
+		for (var i = 0; i < allOverlay.length; i++) {
+			if (allOverlay[i].toString() == "[object Marker]") {
+
+				map.removeOverlay(allOverlay[i]);
+
+			}
+
+		}
+
+		var flg1 = true;
+		var temp = document.getElementById("text").value  //text为文本框的id ,原生写法
+
+		// var temp =$('#text').val();//获取值，jquery库写法
+		//正则表达式
+		var reg = new RegExp(temp);
+		for (var i = 0; i < cjary.length; i++) {
+			//如果字符串中不包含目标字符会返回-1
+			//if (cjaryallx[i].poiname.match(reg)) {
+			if (cjary[i].poiname.match(reg)) {
+				//var map = new BMap.Map("allmap");   // 创建Map实例
+				//var pointx2 = new BMap.Point(pointsx, cjary[i].lat);
+				var opts = {
+					title: "mrk",    // 指定文本标注所在的地理位置
+					offset: new BMap.Size(10, -10)    //设置文本偏移量
+				}
+
+				var markerx2 = new BMap.Marker(pointsx[i], opts);  // 创建标注
+				// 将标注添加到地图中
+
+				markerx2.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+
+				map.centerAndZoom(pointsx[i], 15);  // 初始化地图,设置中心点坐标和地图级别
+				// 设置地图显示的城市 此项是必须设置的
+				map.addOverlay(markerx2);
+				flg1 = false;
+			}
+
+		}
+		if (flg1 == true) {
+			alert("无该场景信息。");
+
+		}
+	}
+
+    */
+
+	function cjfindx() {
+		var allOverlay = map.getOverlays();
+		for (var i = 0; i < allOverlay.length; i++) {
+			if (allOverlay[i].toString() == "[object Marker]") {
+
+				map.removeOverlay(allOverlay[i]);
+
+			}
+
+		}
+
+		var flg1 = true;
+		var temp = document.getElementById("text").value  //text为文本框的id ,原生写法
+
+
+		var reg = new RegExp(temp);
+		for (var i = 0; i < cjaryallx.length; i++) {
+			//如果字符串中不包含目标字符会返回-1
+			if (cjaryallx[i].poiname.match(reg)) {
+				//var map = new BMap.Map("allmap");   // 创建Map实例
+				//var pointx2 = new BMap.Point(pointsx, cjary[i].lat);
+				var opts = {
+					title: "mrk",    // 指定文本标注所在的地理位置
+					offset: new BMap.Size(10, -10)    //设置文本偏移量
+				}
+
+				var markerx2 = new BMap.Marker(pointall[i], opts);  // 创建标注
+				// 将标注添加到地图中
+
+				markerx2.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+
+				map.centerAndZoom(pointall[i], 15);  // 初始化地图,设置中心点坐标和地图级别
+				// 设置地图显示的城市 此项是必须设置的
+				map.addOverlay(markerx2);
+				flg1 = false;
+			}
+
+		}
+		if (flg1 == true) {
+			alert("无该场景信息。");
+
+		}
+	}
+
+	//: 判断网页是否加载完成   
+	document.onreadystatechange = function () {
+		if (document.readyState == "complete") {
+			//pcultershow();
+			 showtc(lngx, laty);
+			 ppcell();
+			 showdwtc( lngx,laty)
+
+		}
+	}
+
+
+	function hiddenMarker(eventtype) {
+		var allOverlay = map.getOverlays();
+		for (var i = 0; i < allOverlay.label.length; i++) {
+			if (allOverlay[i]["layerType"] == eventtype) {
+				map.removeOverlay(allOverlay[i]);
+			}
+		}
+
+	}
+
+
+	function hiddencell() {
+		var allOverlay = map.getOverlays();
+		for (var i = 0; i < allOverlay.length; i++) {
+			if (allOverlay[i].toString() == "[object Polygon]" || allOverlay[i].toString() == "[object Circle]") {
+
+				allOverlay[i].hide();
+
+			}
+
+		}
+
+
+	}
+
+	function hideText() {
+		map.setDisplayOptions({
+			poiText: false
+		})
+	}
+
+	var flg4 = true;
+
+	function hiddenlabel() {
+		if (flg4 == true) {
+			//if (allOverlay[i] instanceof BMap.Marker) 
+			var allOverlay = map.getOverlays();
+			for (var i = 0; i < allOverlay.length; i++) {
+				if (allOverlay[i].toString() == "[object Label]") {
+
+					allOverlay[i].hide();
+
+				}
+
+			}
+			flg4 = false;
+		}
+		else {
+
+			//if (allOverlay[i] instanceof BMap.Marker) 
+			var allOverlay = map.getOverlays();
+			for (var i = 0; i < allOverlay.length; i++) {
+				if (allOverlay[i].toString() == "[object Label]") {
+
+					allOverlay[i].show();
+
+				}
+
+			}
+
+			flg4 = true;
+
+		}
+
+	}
+
+	//清除
+	function clearall() {
+		/*
+		var allOverlay = map.getOverlays();
+		for (var i = 0; i < allOverlay.length -1; i++){
+			if((allOverlay[i].toString() == "[object Polygon]")||(allOverlay[i].toString() == "[object Label]") ||(allOverlay[i].toString() == "[object Circle]") ||(allOverlay[i].toString() == "[object Marker]") )
+			{
+				map.removeOverlay(allOverlay[i]);
+				//return false;
+			}
+		}
+		
+*/
+		 map.clearOverlays();
+		 flg2=true;
+		 flg3=true;
+		 flgdw=true;
+	}
+
+
+</script>
